@@ -2,13 +2,26 @@ import './App.scss';
 import { useState } from 'react';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleNotch } from '@fortawesome/free-solid-svg-icons';
+
+const API_URL = process.env.REACT_APP_API;
 
 function App() {
   const [count, setCount] = useState(3);
   const [results, setResults] = useState([]);
   const [fetching, setFetching] = useState(false);
 
-  const fetchRandom = () => {};
+  const fetchRandom = async () => {
+    if (!fetching) {
+      setFetching(true);
+      const res = await fetch(`${API_URL}/BentExample`, {
+        mode: 'cors',
+      });
+      const json = await res.json();
+      setResults(json.giphs || []);
+      setFetching(false);
+    }
+  };
 
   const highlightNext = () => {};
 
@@ -25,15 +38,27 @@ function App() {
           highlight them in alphabetical order by id.
         </p>
         <form name='actions'>
-          <select name='count'>
+          <select
+            name='count'
+            value={count}
+            onChange={(ev) => setCount(ev.target.value)}
+          >
             {values.map((value) => (
-              <option value={value} selected={count === value}>
+              <option key={value} value={value}>
                 {value}
               </option>
             ))}
           </select>
-          <button className='primary' onClick={fetchRandom}>
-            Random
+          <button
+            className='primary'
+            onClick={fetchRandom}
+            disabled={!!fetching}
+          >
+            {fetching ? (
+              <FontAwesomeIcon icon={faCircleNotch} spin />
+            ) : (
+              'Random'
+            )}
           </button>
           <button onClick={highlightNext} disabled={!results.length}>
             Highlight
@@ -42,7 +67,7 @@ function App() {
       </section>
       <section className='results'>
         {fetching ? (
-          <FontAwesomeIcon icon='spinner' spin size='lg' />
+          <FontAwesomeIcon icon={faCircleNotch} spin size='lg' />
         ) : results.length ? null : (
           <em>Nothing matched</em>
         )}
