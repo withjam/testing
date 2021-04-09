@@ -1,38 +1,70 @@
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+article.challenge-app {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
+  align-items: stretch;
+  flex: 1;
 
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+  header {
+    background-color: #90caf9;
+    padding: 1.25rem;
   }
-  to {
-    transform: rotate(360deg);
+
+  .banner {
+    background-color: #424242;
+    color: #ffffffb3;
+    padding: 3rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    p {
+      font-size: 1.25rem;
+    }
+
+    form {
+      margin: 2rem 0 0;
+
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+
+      & > * {
+        margin: 0 0.5em;
+      }
+    }
+  }
+
+  select {
+    appearance: none;
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    font-family: inherit;
+    font-size: 1.5rem;
+    cursor: inherit;
+    line-height: inherit;
+    color: #fff;
+    outline: none;
+  }
+
+  button {
+    border: solid 1px #90caf9;
+    color: #90caf9;
+    padding: 0.5em 1em;
+    background-color: transparent;
+    border-radius: 6px;
+    font-size: 1rem;
+
+    &.primary,
+    [submit='true'] {
+      background-color: #90caf9;
+      color: #424242;
+    }
+
+    &:disabled {
+      opacity: 0.5;
+    }
   }
 }

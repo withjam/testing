@@ -1,24 +1,53 @@
-import logo from './logo.svg';
 import './App.scss';
+import { useState } from 'react';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 function App() {
+  const [count, setCount] = useState(3);
+  const [results, setResults] = useState([]);
+  const [fetching, setFetching] = useState(false);
+
+  const fetchRandom = () => {};
+
+  const highlightNext = () => {};
+
+  const values = [1, 2, 3, 4, 5];
+
   return (
-    <div className='App'>
-      <header className='App-header'>
-        <img src={logo} className='App-logo' alt='logo' />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className='App-link'
-          href='https://reactjs.org'
-          target='_blank'
-          rel='noopener noreferrer'
-        >
-          Learn React
-        </a>
+    <article className='challenge-app'>
+      <header>
+        <h1>GIPHY Challenge</h1>
       </header>
-    </div>
+      <section className='banner'>
+        <p>
+          Click "Random" to display random GIPHY images. Click "Highlight" to
+          highlight them in alphabetical order by id.
+        </p>
+        <form name='actions'>
+          <select name='count'>
+            {values.map((value) => (
+              <option value={value} selected={count === value}>
+                {value}
+              </option>
+            ))}
+          </select>
+          <button className='primary' onClick={fetchRandom}>
+            Random
+          </button>
+          <button onClick={highlightNext} disabled={!results.length}>
+            Highlight
+          </button>
+        </form>
+      </section>
+      <section className='results'>
+        {fetching ? (
+          <FontAwesomeIcon icon='spinner' spin size='lg' />
+        ) : results.length ? null : (
+          <em>Nothing matched</em>
+        )}
+      </section>
+    </article>
   );
 }
 
