@@ -17,7 +17,7 @@ function App() {
     ev.preventDefault();
     if (!fetching) {
       setFetching(true);
-      const res = await fetch(`${API_URL}/BentExample?count=${count}`, {
+      const res = await fetch(`${API_URL}/GiphyApi?count=${count}`, {
         mode: 'cors',
       });
       const json = await res.json();
