@@ -1,6 +1,7 @@
 import './App.scss';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
+import { GiphyImage } from './GiphyImage';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleNotch } from '@fortawesome/free-solid-svg-icons';
 
@@ -10,11 +11,13 @@ function App() {
   const [count, setCount] = useState(3);
   const [results, setResults] = useState([]);
   const [fetching, setFetching] = useState(false);
+  const [highlighted, setHighlighted] = useState();
 
-  const fetchRandom = async () => {
+  const fetchRandom = async (ev) => {
+    ev.preventDefault();
     if (!fetching) {
       setFetching(true);
-      const res = await fetch(`${API_URL}/BentExample`, {
+      const res = await fetch(`${API_URL}/BentExample?count=${count}`, {
         mode: 'cors',
       });
       const json = await res.json();
@@ -23,7 +26,29 @@ function App() {
     }
   };
 
-  const highlightNext = () => {};
+  const sortedResults = useMemo(() => {
+    return results
+      .reduce((acc, val) => {
+        acc.push(val.id);
+        return acc;
+      }, [])
+      .sort();
+  }, [results]);
+
+  const highlightNext = (ev) => {
+    ev.preventDefault();
+    if (!highlighted) {
+      setHighlighted(sortedResults[0]);
+    } else {
+      const curr = sortedResults.indexOf(highlighted);
+      // get next highlighted
+      setHighlighted(
+        curr === sortedResults.length - 1
+          ? sortedResults[0]
+          : sortedResults[curr + 1]
+      );
+    }
+  };
 
   const values = [1, 2, 3, 4, 5];
 
@@ -68,9 +93,15 @@ function App() {
       <section className='results'>
         {fetching ? (
           <FontAwesomeIcon icon={faCircleNotch} spin size='lg' />
-        ) : results.length ? null : (
-          <em>Nothing matched</em>
-        )}
+        ) : results.length ? (
+          results.map((result) => (
+            <GiphyImage
+              key={result.id}
+              data={result}
+              highlight={highlighted === result.id}
+            />
+          ))
+        ) : null}
       </section>
     </article>
   );
